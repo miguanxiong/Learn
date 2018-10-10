@@ -1,0 +1,16 @@
+
+.geoMap{
+  height: 500px;
+  border: solid burlywood 1px;
+}
+.amap-logo{
+  visibility: hidden;
+}
+.amap-copyright{
+  visibility: hidden;
+  display: none;
+  height: 1px;
+}
+#json-pretty{
+  height: 25px;
+}
