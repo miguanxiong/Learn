@@ -2,7 +2,7 @@
 + map路径
 + antd组件引用
 + umi环境搭建
-    - 安装umi npm intall -g umi;
+    - 安装umi npm install -g umi;
     - 检查安装umi -v
     umi g 是umi generate用于生成组件(component),page,layout快引入生成插件
     - 构建部署
