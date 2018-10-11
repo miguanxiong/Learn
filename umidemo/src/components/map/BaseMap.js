@@ -15,6 +15,7 @@ export default class BaseMap extends Component {
     //  }},
       //'Scale',
       //鹰眼
+      'Weather',
      {name:'OverView',
       options:{
       visible: true,
@@ -52,17 +53,18 @@ export default class BaseMap extends Component {
       this.mapEvents={
         created: (instance) => { console.log(instance.getZoom())
             this.state.mapIns=instance;
+         //   var mousetool = new AMap.MouseTool(mapObj);
+           // .marker();
         },
         click: () => { 
             this.state.currentCity={a:"asf"};
-            let cityInfo2;
+         //   this.state.mapIns.marker();
             this.state.mapIns.getCity(cityInfo=>{
                 console.info(cityInfo);
                 this.state.currentCity=cityInfo;
                 return cityInfo;
             }
             );
-            console.info(cityInfo2);
             
             console.info(this.state.currentCity);
         }
@@ -73,7 +75,10 @@ export default class BaseMap extends Component {
  
 
     render() {
-      
+      var ert='anything where';
+      var ert1='anything where';
+    //  debugger;
+      console.info(ert);
       return (
         <div className={styles.geoMap} >
         {/* zoom:5中国 */}
