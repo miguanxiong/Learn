@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Map,MouseTool,InfoWindow,Markers } from 'react-amap';
 import JSONPretty from 'react-json-pretty';
 import styles from '../index.css';
+import { Button } from 'antd';
 const randomMarker = (len) => (
   Array(len).fill(true).map((e, idx) => ({
     position: {
@@ -76,7 +77,7 @@ export default class MouseToolMap extends Component {
         //  console.info(obj);
         }
       }
-      this.markers = randomMarker(100);
+      this.markers = randomMarker(10);
  }
  drawWhat(obj) {
   let text = '';
@@ -120,15 +121,25 @@ export default class MouseToolMap extends Component {
     });
   }
 }
-
+//获取地图中maker
+getMarkers(){
+  this.state.mapIns
+    let makers= this.state.mapIns.getAllOverlays('marker');
+    console.info(makers);
+    makers.forEach(element => {
+      console.info("经度:"+element.getPosition().getLng());
+      console.info("维度:"+element.getPosition().getLat());
+    });
+  
+}
 
     render() {
       
       return (
         <div className={styles.geoMap} >
        <JSONPretty id="json-pretty" className="test-class"  json={this.state.currentCity}></JSONPretty>
-        <button onClick={()=>{this.drawMarker()}}>Draw Marker</button> 
-     
+        <Button onClick={()=>{this.drawMarker()}}>Draw Marker</Button> 
+        <Button onClick={this.getMarkers.bind(this)}>output markers</Button>
         {/* zoom:5中国 */}
           <Map 
           amapkey={"6567cbc58c5746a491ccac4cddabe74b"}

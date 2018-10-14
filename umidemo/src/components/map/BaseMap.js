@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { Map,MouseTool,InfoWindow } from 'react-amap';
 import JSONPretty from 'react-json-pretty';
 import styles from '../index.css';
+//import UIMaker from './UIMaker';
+//import UIAreaTree from './UIAreaTree'; 未完待续
+
+import UIDistrictExplorer from './UIDistrictExplorer';
+
 export default class BaseMap extends Component {
  constructor(){
-     super();
+    super();
      //map 插件
     this.mapPlugins=[
     
@@ -65,7 +70,8 @@ export default class BaseMap extends Component {
                 return cityInfo;
             }
             );
-            
+          let info=  this.state.mapIns.getCenter();
+          console.info(info.toString());
             console.info(this.state.currentCity);
         }
     
@@ -93,9 +99,11 @@ export default class BaseMap extends Component {
           zoomEnable={true}
           useAMapUI={true}//加此参数
           >
-      
-       
+         {/* 引用自定义ui */}
+       <UIDistrictExplorer />
+    
           </Map>
+      
         </div>
       );
     }
