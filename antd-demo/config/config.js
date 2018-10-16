@@ -14,7 +14,8 @@ export default {
       title: 'antd-demo',
       dll: false,
       routes: {
-        exclude: [],
+       // exclude: [],
+        exclude: [/models\//]
       },
       hardSource: false,
       ignoreMomentLocale: true,
@@ -56,4 +57,17 @@ export default {
       },
     ],
   ],
+  exportStatic: {
+    htmlSuffix: true,
+    singular:true,
+    dynamicRoot:true
+  },
+  // publicPath:'d:/umi/js'
+  "proxy": {
+    "/api": {
+      "target": "http://jsonplaceholder.typicode.com/",
+      "changeOrigin": true,
+      "pathRewrite": { "^/api" : "" }
+    }
+  }
 }

@@ -29,7 +29,9 @@ const  Products = ({ dispatch, products}) => {
       payload: id,
     });
   }
+  console.info("products 生成");
   return (
+  
     <div className={styles.tableList}>
          <div className={styles.tableListOperator}> 
               <Button icon="plus" type="primary" className={styles.button}>
@@ -44,7 +46,7 @@ const  Products = ({ dispatch, products}) => {
 };
 
 export default connect(({ products }) => ({
-  products,
+    products,
 }))(Products);
 
 

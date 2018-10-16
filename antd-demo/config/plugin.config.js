@@ -25,4 +25,7 @@ export default config => {
       indexFileName: 'index.html',
     },
   ]);
+
+
 };
+
