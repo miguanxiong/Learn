@@ -21,9 +21,17 @@
     "umi-plugin-react": "^1.1.1"
   },
   "lint-staged": {
-    "*.{js,jsx}": ["eslint --fix", "git add"]
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "engines": {
     "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "antd-pro-merge-less": "^0.0.9",
+    "antd-pro-theme-webpack-plugin": "^1.1.8",
+    "umi-plugin-ga": "^1.1.3"
   }
 }

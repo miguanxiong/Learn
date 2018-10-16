@@ -48,5 +48,12 @@ export default {
         mergeRules: false,
       },
     }],
+    [
+      'umi-plugin-ga',
+      {
+        code: 'UA-72788897-6',
+        judge: () => process.env.APP_TYPE === 'site',
+      },
+    ],
   ],
 }

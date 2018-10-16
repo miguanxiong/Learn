@@ -21,3 +21,5 @@
     umi 里约定 src/models 下的 model 会被自动注入，你无需手动注入。
     dva 提供了 connect 方法。如果你熟悉 redux，这个 connect 来自 react-redux
 `umi g dva:model filename`
+### 5. 添加antd less样式
+ `yarn add antd-pro-merge-less`,`yarn add antd-pro-theme-webpack-plugin`，`yarn add umi-plugin-ga`

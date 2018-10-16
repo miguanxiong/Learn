@@ -20,6 +20,7 @@ import {
   Divider,
   Steps,
   Radio,
+ 
 } from 'antd';
 const  Products = ({ dispatch, products}) => {
   function handleDelete(id) {
@@ -30,14 +31,14 @@ const  Products = ({ dispatch, products}) => {
   }
   return (
     <div className={styles.tableList}>
-         <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" className={styles.button} >
+         <div className={styles.tableListOperator}> 
+              <Button icon="plus" type="primary" className={styles.button}>
                 新建
               </Button>
-             
-            </div>
-      <h2>List of Products</h2>
-      <ProductList onDelete={handleDelete} products={products} />
+        </div>       
+          
+      {/* <h2>List of Products</h2> */}
+      <ProductList onDelete={handleDelete} products={products}/>
     </div>
   );
 };

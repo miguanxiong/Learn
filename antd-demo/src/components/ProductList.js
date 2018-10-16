@@ -8,7 +8,6 @@ const ProductList = ({ onDelete, products }) => {
   },
  {
     title: 'Actions',
-   
     key: 'actions',
     render: (text, record) => {
       return (
