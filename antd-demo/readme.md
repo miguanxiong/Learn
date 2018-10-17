@@ -23,3 +23,5 @@
 `umi g dva:model filename`
 ### 5. 添加antd less样式
  `yarn add antd-pro-merge-less`,`yarn add antd-pro-theme-webpack-plugin`，`yarn add umi-plugin-ga`
+### 6. 关于数据请求依赖
+`yarn add config`
