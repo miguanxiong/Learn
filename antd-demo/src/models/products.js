@@ -15,6 +15,7 @@ export default {
     },
   },
   effects: {
+    
     *fetch({ type, payload }, { put, call, select }) {
     },
   },

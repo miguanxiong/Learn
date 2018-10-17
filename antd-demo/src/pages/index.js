@@ -1,6 +1,7 @@
 import styles from './index.css';
 
 export default function() {
+  console.info("pages-index");
   return (
     <div className={styles.normal}>
       <div className={styles.welcome} />
