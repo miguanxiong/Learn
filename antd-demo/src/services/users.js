@@ -1,4 +1,8 @@
 import request from '../utils/request';
+/**
+ * service:请求后台数据，后台服务链接
+ *  
+ */
 export function fetch({ page = 1 }) {
     return request(`/api/users?_page=${page}&_limit=5`);
   }

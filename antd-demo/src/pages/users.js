@@ -1,11 +1,10 @@
 import styles from './users.css';
 import Users from '../components/Users';
 export default function() {
-  console.info("page/users-exe");
+//组件 自顶向下加载
   return (
     <div className={styles.normal}>
-      <h1>Page users</h1>
-      <Users />
+     <Users />
     </div>
   );
 }
