@@ -13,10 +13,17 @@ export default {
       dynamicImport: false,
       title: 'antd-demo',
       dll: false,
+      //使用umi-plugin-locale
+      locale: {
+        enable: true, // default false
+        default: 'zh-CN', // default zh-CN
+        baseNavigator: true, // default true, when it is true, will use `navigator.language` overwrite default
+      },
       routes: {
        // exclude: [],
         exclude: [/models\//]
       },
+
       hardSource: false,
       ignoreMomentLocale: true,
       lessLoaderOptions: {
@@ -69,5 +76,9 @@ export default {
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
     }
-  }
+  },
+  //主题颜色定制，按钮，导航背景色等
+  "theme": {
+    "primary-color": "#1DA57A",
+  },
 }

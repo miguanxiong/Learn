@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "lodash-decorators": "^6.0.0"
+  }
+}

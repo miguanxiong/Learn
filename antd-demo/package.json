@@ -33,6 +33,7 @@
     "antd-pro-merge-less": "^0.0.9",
     "antd-pro-theme-webpack-plugin": "^1.1.8",
     "config": "^2.0.1",
+    "lodash-decorators": "^6.0.0",
     "umi-plugin-ga": "^1.1.3"
   }
 }

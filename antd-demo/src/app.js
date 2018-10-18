@@ -1,5 +1,5 @@
 
-
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 export const dva = {
   config: {
     onError(err) {
@@ -14,4 +14,3 @@ export const dva = {
     },
   },
 };
-

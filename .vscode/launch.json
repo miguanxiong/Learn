@@ -4,7 +4,7 @@
       "name": "Chrome",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:8000/products",
+      "url": "http://localhost:8000",
       "webRoot": "${workspaceRoot}/antd-demo",
       "sourceMapPathOverrides": {
         "webpack:///src/*": "${webRoot}/*"
