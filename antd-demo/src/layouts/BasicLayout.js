@@ -17,6 +17,7 @@ import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
 import Exception403 from '../pages/Exception/403';
+import global from '../models/global';
 
 const { Content } = Layout;
 
@@ -73,26 +74,35 @@ const query = {
 
 class BasicLayout extends React.PureComponent {
   constructor(props) {
+    console.info("constu");
     super(props);
     this.getPageTitle = memoizeOne(this.getPageTitle);
     this.getBreadcrumbNameMap = memoizeOne(this.getBreadcrumbNameMap, isEqual);
     this.breadcrumbNameMap = this.getBreadcrumbNameMap();
     this.matchParamsPath = memoizeOne(this.matchParamsPath, isEqual);
+  
   }
 
   state = {
     rendering: true,
     isMobile: false,
+    menuRouter:[],
   };
 
   componentDidMount() {
     const { dispatch } = this.props;
+      //mgx
+    dispatch({
+      type: 'global/fetchMenuData',
+    });//
     dispatch({
       type: 'user/fetchCurrent',
     });
     dispatch({
       type: 'setting/getSetting',
     });
+
+  //  this.renderMenuRouter={}
     this.renderRef = requestAnimationFrame(() => {
       this.setState({
         rendering: false,
@@ -111,6 +121,8 @@ class BasicLayout extends React.PureComponent {
   componentDidUpdate(preProps) {
     // After changing to phone mode,
     // if collapsed is true, you need to click twice to display
+    console.info("componentDidUpdate");
+    console.info(global.state);
     this.breadcrumbNameMap = this.getBreadcrumbNameMap();
     const { isMobile } = this.state;
     const { collapsed } = this.props;
@@ -120,6 +132,8 @@ class BasicLayout extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    console.info("componentWillUnmount");
+   
     cancelAnimationFrame(this.renderRef);
     unenquireScreen(this.enquireHandler);
   }
@@ -136,6 +150,8 @@ class BasicLayout extends React.PureComponent {
     const {
       route: { routes },
     } = this.props;
+    const { dispatch } = this.props;
+
     return formatter(routes);
   }
 
@@ -154,6 +170,8 @@ class BasicLayout extends React.PureComponent {
         routerMap[menuItem.path] = menuItem;
       });
     };
+   console.info(this.props);
+   console.info(global.state);
     mergeMenuAndRouter(this.getMenuData());
     return routerMap;
   }
@@ -209,14 +227,15 @@ class BasicLayout extends React.PureComponent {
     // Do not render SettingDrawer in production
     // unless it is deployed in preview.pro.ant.design as demo
     const { rendering } = this.state;
-    //if ((rendering || process.env.NODE_ENV === 'production') && APP_TYPE !== 'site') {
-     // return null;
-   // }
+  //   if ((rendering || process.env.NODE_ENV === 'production') && APP_TYPE !== 'site') {
+  //    return null;
+  //  }
     return <SettingDrawer />;
   }
 
   render() {
     const {
+      mes,
       navTheme,
       layout: PropsLayout,
       children,
@@ -278,8 +297,12 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-export default connect(({ global, setting }) => ({
+
+
+export default connect(({global, setting,loading}) => ({
+  loading: loading.effects['global/fetchMenuData'],//mgx
+   mes: global.mes,
   collapsed: global.collapsed,
-  layout: setting.layout,
+   layout: setting.layout,
   ...setting,
 }))(BasicLayout);

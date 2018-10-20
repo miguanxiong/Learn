@@ -1,123 +1,137 @@
+// 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
-    'get /api/user': 
-       [
-        {
-          "id": 1,
-          "name": "Leanne Graham",
-          "username": "Bret",
-          "email": "Sincere@april.biz",
-          "address": {
-            "street": "Kulas Light",
-            "suite": "Apt. 556",
-            "city": "Gwenborough",
-            "zipcode": "92998-3874",
-            "geo": {
-              "lat": "-37.3159",
-              "lng": "81.1496"
-            }
-          },
-          "phone": "1-770-736-8031 x56442",
-          "website": "hildegard.org",
-          "company": {
-            "name": "Romaguera-Crona",
-            "catchPhrase": "Multi-layered client-server neural-net",
-            "bs": "harness real-time e-markets"
-          }
-        },
-        {
-          "id": 2,
-          "name": "Ervin Howell",
-          "username": "Antonette",
-          "email": "Shanna@melissa.tv",
-          "address": {
-            "street": "Victor Plains",
-            "suite": "Suite 879",
-            "city": "Wisokyburgh",
-            "zipcode": "90566-7771",
-            "geo": {
-              "lat": "-43.9509",
-              "lng": "-34.4618"
-            }
-          },
-          "phone": "010-692-6593 x09125",
-          "website": "anastasia.net",
-          "company": {
-            "name": "Deckow-Crist",
-            "catchPhrase": "Proactive didactic contingency",
-            "bs": "synergize scalable supply-chains"
-          }
-        },
-        {
-          "id": 3,
-          "name": "Clementine Bauch",
-          "username": "Samantha",
-          "email": "Nathan@yesenia.net",
-          "address": {
-            "street": "Douglas Extension",
-            "suite": "Suite 847",
-            "city": "McKenziehaven",
-            "zipcode": "59590-4157",
-            "geo": {
-              "lat": "-68.6102",
-              "lng": "-47.0653"
-            }
-          },
-          "phone": "1-463-123-4447",
-          "website": "ramiro.info",
-          "company": {
-            "name": "Romaguera-Jacobson",
-            "catchPhrase": "Face to face bifurcated interface",
-            "bs": "e-enable strategic applications"
-          }
-        },
-        {
-          "id": 4,
-          "name": "Patricia Lebsack",
-          "username": "Karianne",
-          "email": "Julianne.OConner@kory.org",
-          "address": {
-            "street": "Hoeger Mall",
-            "suite": "Apt. 692",
-            "city": "South Elvis",
-            "zipcode": "53919-4257",
-            "geo": {
-              "lat": "29.4572",
-              "lng": "-164.2990"
-            }
-          },
-          "phone": "493-170-9623 x156",
-          "website": "kale.biz",
-          "company": {
-            "name": "Robel-Corkery",
-            "catchPhrase": "Multi-tiered zero tolerance productivity",
-            "bs": "transition cutting-edge web services"
-          }
-        },
-        {
-          "id": 5,
-          "name": "Chelsey Dietrich",
-          "username": "Kamren",
-          "email": "Lucio_Hettinger@annie.ca",
-          "address": {
-            "street": "Skiles Walks",
-            "suite": "Suite 351",
-            "city": "Roscoeview",
-            "zipcode": "33263",
-            "geo": {
-              "lat": "-31.8129",
-              "lng": "62.5342"
-            }
-          },
-          "phone": "(254)954-1289",
-          "website": "demarco.info",
-          "company": {
-            "name": "Keebler LLC",
-            "catchPhrase": "User-centric fault-tolerant solution",
-            "bs": "revolutionize end-to-end systems"
-          }
-        }
-      ]
-
-  
+  // 支持值为 Object 和 Array
+  'GET /api/currentUser': {
+    name: 'Serati Ma',
+    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+    userid: '00000001',
+    email: 'antdesign@alipay.com',
+    signature: '海纳百川，有容乃大',
+    title: '交互专家',
+    group: '蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED',
+    tags: [
+      {
+        key: '0',
+        label: '很有想法的',
+      },
+      {
+        key: '1',
+        label: '专注设计',
+      },
+      {
+        key: '2',
+        label: '辣~',
+      },
+      {
+        key: '3',
+        label: '大长腿',
+      },
+      {
+        key: '4',
+        label: '川妹子',
+      },
+      {
+        key: '5',
+        label: '海纳百川',
+      },
+    ],
+    notifyCount: 12,
+    country: 'China',
+    geographic: {
+      province: {
+        label: '浙江省',
+        key: '330000',
+      },
+      city: {
+        label: '杭州市',
+        key: '330100',
+      },
+    },
+    address: '西湖区工专路 77 号',
+    phone: '0752-268888888',
+  },
+  // GET POST 可省略
+  'GET /api/users': [
+    {
+      key: '1',
+      name: 'John Brown',
+      age: 32,
+      address: 'New York No. 1 Lake Park',
+    },
+    {
+      key: '2',
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 1 Lake Park',
+    },
+    {
+      key: '3',
+      name: 'Joe Black',
+      age: 32,
+      address: 'Sidney No. 1 Lake Park',
+    },
+  ],
+  'POST /api/login/account': (req, res) => {
+    const { password, userName, type } = req.body;
+    if (password === '888888' && userName === 'admin') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'admin',
+      });
+      return;
     }
- 
+    if (password === '123456' && userName === 'user') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'user',
+      });
+      return;
+    }
+    res.send({
+      status: 'error',
+      type,
+      currentAuthority: 'guest',
+    });
+  },
+  'POST /api/register': (req, res) => {
+    res.send({ status: 'ok', currentAuthority: 'user' });
+  },
+  'GET /api/500': (req, res) => {
+    res.status(500).send({
+      timestamp: 1513932555104,
+      status: 500,
+      error: 'error',
+      message: 'error',
+      path: '/base/category/list',
+    });
+  },
+  'GET /api/404': (req, res) => {
+    res.status(404).send({
+      timestamp: 1513932643431,
+      status: 404,
+      error: 'Not Found',
+      message: 'No message available',
+      path: '/base/category/list/2121212',
+    });
+  },
+  'GET /api/403': (req, res) => {
+    res.status(403).send({
+      timestamp: 1513932555104,
+      status: 403,
+      error: 'Unauthorized',
+      message: 'Unauthorized',
+      path: '/base/category/list',
+    });
+  },
+  'GET /api/401': (req, res) => {
+    res.status(401).send({
+      timestamp: 1513932555104,
+      status: 401,
+      error: 'Unauthorized',
+      message: 'Unauthorized',
+      path: '/base/category/list',
+    });
+  },
+};

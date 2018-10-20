@@ -1,6 +1,8 @@
 import request from '../utils/request';
 /**
- * service:请求后台数据，后台服务链接
+ * service:
+ * 1.请求后台数据，后台服务链接
+ * 为model提供服务
  *  
  */
 export function fetch({ page = 1 }) {
