@@ -6,7 +6,7 @@ export default {
   state: {
     collapsed: false,
     notices: [],
-    mes:[],
+    mex:[],
   },
 
   effects: {
@@ -36,7 +36,7 @@ export default {
       const data = yield call(getMenuData);
     //  console.info(data);
       yield put({
-        type: 'saveMenuDataX',
+        type: 'saveMenus',
         payload: data,
       });
       // yield put({
@@ -61,10 +61,10 @@ export default {
       };
     },
     //mgx
-    saveMenuDataX(state, { payload }) {
+    saveMenus(state, { payload }) {
       return {
         ...state,
-        mes: payload,
+        mex: payload,
       };
     },
     saveClearedNotices(state, { payload }) {

@@ -23,6 +23,7 @@ const { Content } = Layout;
 
 // Conversion router to menu.
 function formatter(data, parentPath = '', parentAuthority, parentName) {
+ 
   return data.map(item => {
     let locale = 'menu';
     if (parentName && item.name) {
@@ -74,7 +75,6 @@ const query = {
 
 class BasicLayout extends React.PureComponent {
   constructor(props) {
-    console.info("constu");
     super(props);
     this.getPageTitle = memoizeOne(this.getPageTitle);
     this.getBreadcrumbNameMap = memoizeOne(this.getBreadcrumbNameMap, isEqual);
@@ -91,10 +91,7 @@ class BasicLayout extends React.PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-      //mgx
-    dispatch({
-      type: 'global/fetchMenuData',
-    });//
+   
     dispatch({
       type: 'user/fetchCurrent',
     });
@@ -121,8 +118,7 @@ class BasicLayout extends React.PureComponent {
   componentDidUpdate(preProps) {
     // After changing to phone mode,
     // if collapsed is true, you need to click twice to display
-    console.info("componentDidUpdate");
-    console.info(global.state);
+
     this.breadcrumbNameMap = this.getBreadcrumbNameMap();
     const { isMobile } = this.state;
     const { collapsed } = this.props;
@@ -132,7 +128,6 @@ class BasicLayout extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    console.info("componentWillUnmount");
    
     cancelAnimationFrame(this.renderRef);
     unenquireScreen(this.enquireHandler);
@@ -147,11 +142,22 @@ class BasicLayout extends React.PureComponent {
   }
 
   getMenuData() {
-    const {
+    let {
       route: { routes },
     } = this.props;
+   //mgx
+  
+   if(this.props.mex.length==0){
     const { dispatch } = this.props;
-
+    dispatch({
+      type: 'global/fetchMenuData',
+    });
+   }
+   if(this.props.mex.length!=0){
+    routes=this.props.mex;
+   }
+ 
+ //console.info(this.props.mex);
     return formatter(routes);
   }
 
@@ -170,8 +176,7 @@ class BasicLayout extends React.PureComponent {
         routerMap[menuItem.path] = menuItem;
       });
     };
-   console.info(this.props);
-   console.info(global.state);
+
     mergeMenuAndRouter(this.getMenuData());
     return routerMap;
   }
@@ -235,7 +240,6 @@ class BasicLayout extends React.PureComponent {
 
   render() {
     const {
-      mes,
       navTheme,
       layout: PropsLayout,
       children,
@@ -243,6 +247,7 @@ class BasicLayout extends React.PureComponent {
     } = this.props;
     const { isMobile } = this.state;
     const isTop = PropsLayout === 'topmenu';
+ 
     const menuData = this.getMenuData();
     const routerConfig = this.matchParamsPath(pathname);
     const layout = (
@@ -300,8 +305,8 @@ class BasicLayout extends React.PureComponent {
 
 
 export default connect(({global, setting,loading}) => ({
-  loading: loading.effects['global/fetchMenuData'],//mgx
-   mes: global.mes,
+ // loading: loading.effects['global/fetchMenuData'],//mgx
+   mex: global.mex,
   collapsed: global.collapsed,
    layout: setting.layout,
   ...setting,

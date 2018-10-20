@@ -21,7 +21,7 @@ export default {
       });
       // Login successfully
       if (response.status === 'ok') {
-        reloadAuthorized();
+        reloadAuthorized();//重载权限
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params;

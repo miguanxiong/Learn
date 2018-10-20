@@ -1,21 +1,31 @@
-[{
+[
+	{
 	"path": "/dashboard",
 	"name": "dashboard",
 	"icon": "dashboard",
 	"routes": [{
 		"path": "/dashboard/analysis",
 		"name": "analysis",
+		"authority": ["user"],
 		"exact": true
 	}, {
 		"path": "/dashboard/monitor",
 		"name": "monitor",
 		"exact": true
-	}, {
+	},
+	{
+		"path": "/dashboard/monitor123",
+		"name": "monitor12",
+		"exact": true
+	},
+	{
 		"path": "/dashboard/workplace",
 		"name": "workplace",
 		"exact": true
 	}, {}]
-}, {
+}, 
+
+{
 	"path": "/form",
 	"icon": "form",
 	"name": "form",
