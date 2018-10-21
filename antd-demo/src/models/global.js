@@ -6,7 +6,7 @@ export default {
   state: {
     collapsed: false,
     notices: [],
-    mex:[],
+    menus:[],
   },
 
   effects: {
@@ -64,7 +64,7 @@ export default {
     saveMenus(state, { payload }) {
       return {
         ...state,
-        mex: payload,
+        menus: payload,
       };
     },
     saveClearedNotices(state, { payload }) {

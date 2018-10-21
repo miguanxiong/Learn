@@ -44,7 +44,7 @@ export default {
     APP_TYPE: process.env.APP_TYPE || '',
   },
   // 路由配置
-  routes: pageRoutes,
+ routes: pageRoutes,
   // Theme for antd
   // https://ant.design/docs/react/customize-theme-cn
   theme: {

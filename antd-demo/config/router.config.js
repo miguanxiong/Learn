@@ -41,6 +41,7 @@ export default [
           },
         ],
       },
+ 
       // forms
       {
         path: '/form',
@@ -256,9 +257,28 @@ export default [
           },
         ],
       },
+  //sytem
+  {
+    path: '/System',
+    name: 'system',
+    icon: 'user',
+    routes: [
+      // profile
+      {
+        path: '/System/dept',
+        name: 'dept',
+        component: './System/dept',
+      },
+    
+    ],
+  }, 
+
       {
         component: '404',
       },
+     
+ 
+     
     ],
   },
 ];

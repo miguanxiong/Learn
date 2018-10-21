@@ -147,15 +147,17 @@ class BasicLayout extends React.PureComponent {
     } = this.props;
    //mgx
   
-   if(this.props.mex.length==0){
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'global/fetchMenuData',
-    });
-   }
-   if(this.props.mex.length!=0){
-    routes=this.props.mex;
-   }
+  //  if(this.props.menus.length==0){
+  //   const { dispatch } = this.props;
+  //   dispatch({
+  //     type: 'global/fetchMenuData',
+  //   });
+  //  }
+   //控制后台读取菜单数据
+  //  if(this.props.menus.length!=0){
+  //    console.info(global.state);
+  //   routes=this.props.menus;
+  //  }
  
  //console.info(this.props.mex);
     return formatter(routes);
@@ -304,9 +306,8 @@ class BasicLayout extends React.PureComponent {
 
 
 
-export default connect(({global, setting,loading}) => ({
- // loading: loading.effects['global/fetchMenuData'],//mgx
-   mex: global.mex,
+export default connect(({global, setting}) => ({
+   menus: global.menus,
   collapsed: global.collapsed,
    layout: setting.layout,
   ...setting,
