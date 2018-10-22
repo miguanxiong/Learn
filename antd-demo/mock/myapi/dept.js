@@ -24,27 +24,54 @@ const deptList=[
 const deptData={"list":deptList,
         "pagination":{"total": 46, "pageSize": 10, "current": 1}
   }
+
   // mock tableListDataSource
   let tableListDataSource = [];
-  for (let i = 0; i < 46; i += 1) {
-    tableListDataSource.push({
-      key: i,
-      disabled: i % 6 === 0,
-      href: 'https://ant.design',
-      avatar: [
-        'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
-        'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
-      ][i % 2],
-      name: `TradeCode ${i}`,
-      title: `一个任务名称 ${i}`,
-      owner: '曲丽丽',
-      key: i,
-      callNo: Math.floor(Math.random() * 1000),
-      status: Math.floor(Math.random() * 10) % 4,
+ 
+  let tableListChildren = [];
+  for (let i = 0; i < 14; i += 1) {
+   let j=i+20;
+    tableListChildren.push({
+      key: j,
+     disabled: j % 6 === 0,
+    
+      orgName: `行政划区 ${j}`,//行政划区
+      orgNum: `A0 ${j}`,//行政编码
+      address: '102.33,12.345',//地址
+      status: Math.floor(Math.random() * 10) % 2,//行政状态
       updatedAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
       createdAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
-      progress: Math.ceil(Math.random() * 100),
+    
     });
+    let temp = tableListChildren;
+    if(i==0){
+      tableListDataSource.push({
+        key: i,//主键
+        disabled: j % 6 === 0,
+        orgName: `行政划区 ${i}`,//行政划区
+        orgNum: `A0 ${i}`,//行政编码
+        address: '102.33,12.345',//地址
+        status: Math.floor(Math.random() * 10) % 2,//行政状态
+        updatedAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
+        createdAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
+        children:temp,
+      });
+    }else{
+      tableListDataSource.push({
+        key: i,
+      
+        orgName: `行政划区 ${i}`,//行政划区
+        orgNum: `A0 ${i}`,//行政编码
+        address: '102.33,12.345',//地址
+        status: Math.floor(Math.random() * 10) % 4,//行政状态
+        updatedAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
+        createdAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
+       
+      });
+    }
+   
+   
+  
   }
   
   function getDept(req, res, u) {
@@ -55,8 +82,8 @@ const deptData={"list":deptList,
   
     const params = parse(url, true).query;
   
-   // let dataSource = tableListDataSource;
-   let dataSource = deptList;
+   let dataSource = tableListDataSource;
+  //  let dataSource = deptList;
     if (params.sorter) {
       const s = params.sorter.split('_');
       dataSource = dataSource.sort((prev, next) => {
@@ -125,7 +152,6 @@ const deptData={"list":deptList,
           name: `TradeCode ${i}`,
           title: `一个任务名称 ${i}`,
           owner: '曲丽丽',
-          desc,
           callNo: Math.floor(Math.random() * 1000),
           status: Math.floor(Math.random() * 10) % 2,
           updatedAt: new Date(),

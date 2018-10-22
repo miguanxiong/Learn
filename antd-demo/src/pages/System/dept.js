@@ -28,6 +28,7 @@ import {
   Divider,
   Steps,
   Radio,
+  TreeSelect,
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -45,8 +46,26 @@ const getValue = obj =>
     .join(',');
 const statusMap = ['default', 'processing', 'success', 'error'];
 const status = ['注销', '正常', '已上线', '异常'];
-
+const treeData = [{
+  title: 'Node1',
+  value: '0-0',
+  key: '0-0',
+  children: [{
+    title: 'Child Node1',
+    value: '0-0-1',
+    key: '0-0-1',
+  }, {
+    title: 'Child Node2',
+    value: '0-0-2',
+    key: '0-0-2',
+  }],
+}, {
+  title: 'Node2',
+  value: '0-1',
+  key: '0-1',
+}];
 const CreateForm = Form.create()(props => {
+  const icon = <Icon type="smile" />;
   const { modalVisible, form, handleAdd, handleModalVisible } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
@@ -54,6 +73,10 @@ const CreateForm = Form.create()(props => {
       form.resetFields();
       handleAdd(fieldsValue);
     });
+  };
+  let value="";
+  const onChangeTree = () => {
+    value
   };
   return (
     <Modal
@@ -63,23 +86,34 @@ const CreateForm = Form.create()(props => {
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
     >
-    {/* DeptDO{deptId=15, parentId=13, name='测试二部', orderNum=2, delFlag=1 
-  上级行政区划id：parentId	行政区划名称:name		地址
+    {/*
+ orgName: `行政划区 ${i}`,//行政划区
+        orgNum: `A0 ${i}`,//行政编码
+        address: '102.33,12.345',//地址
 
   */}
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="上级行政区划">
         {form.getFieldDecorator('parentId', {
-          rules: [{ required: false, message: '请输入至少五个字符的规则描述！', min: 5 }],
-        })(<Input placeholder="请输入" />)}
+          rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
+        })(<TreeSelect
+          style={{ width: 300 }}
+          //value={this.state.value}
+          dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+          treeData={treeData}
+          placeholder="Please select"
+          treeDefaultExpandAll
+          suffixIcon={icon}
+        //  onChange={this.onChange}
+        />)}
       </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="行政区划名称">
-        {form.getFieldDecorator('name', {
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="行政区划">
+        {form.getFieldDecorator('orgName', {
           rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
         })(<Input placeholder="请输入" />)}
       </FormItem>
       <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="地址">
         {form.getFieldDecorator('address', {
-          rules: [{ required: false, message: '请输入至少五个字符的规则描述！', min: 5 }],
+          rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
         })(<Input placeholder="请输入" />)}
       </FormItem>
     </Modal>
@@ -302,21 +336,26 @@ class TableList extends PureComponent {
     formValues: {},
     stepFormValues: {},
   };
- // {"deptId":8,"parentId":6,"name":"研发二部","orderNum":2,"delFlag":1},
-
   columns = [
     {
-      title: '部门名称',
-      dataIndex: 'name',
+      title: '行政区划',
+      dataIndex: 'orgName',
+      key: 'orgName',
     },
     {
-      title: '排序',
-      dataIndex: 'orderNum',
+      title: '行政区划编码',
+      dataIndex: 'orgNum',
+      key: 'orgNum',
     },
-   
+    {
+      title: '地址',
+      dataIndex: 'address',
+      key: 'address',
+    },
     {
       title: '状态',
-      dataIndex: 'delFlag',
+      dataIndex: 'status',
+      key: 'status',
       filters: [
         {
           text: status[0],
@@ -343,9 +382,13 @@ class TableList extends PureComponent {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true, record)}>配置</a>
+          <a onClick={() => this.handleUpdateModalVisible(true, record)}>编辑</a>
           <Divider type="vertical" />
-          <a href="">订阅警报</a>
+          <a onClick={() => this.handleRemove(true, record)}>删除</a>
+          <Divider type="vertical" />
+          <a onClick={() => this.handleUpdateModalVisible(true, record)}>查看成员</a>
+          <Divider type="vertical" />
+          <a onClick={() => this.handleUpdateModalVisible(true, record)}>角色设置</a>
         </Fragment>
       ),
     },
@@ -404,28 +447,22 @@ class TableList extends PureComponent {
     });
   };
 
-  handleMenuClick = e => {
+  handleRemove = () => {
     const { dispatch } = this.props;
     const { selectedRows } = this.state;
 
     if (!selectedRows) return;
-    switch (e.key) {
-      case 'remove':
-        dispatch({
-          type: 'rule/remove',
-          payload: {
-            key: selectedRows.map(row => row.key),
-          },
-          callback: () => {
-            this.setState({
-              selectedRows: [],
-            });
-          },
+    dispatch({
+      type: 'rule/remove',
+      payload: {
+        key: selectedRows.map(row => row.key),
+      },
+      callback: () => {
+        this.setState({
+          selectedRows: [],
         });
-        break;
-      default:
-        break;
-    }
+      },
+    });
   };
 
   handleSelectRows = rows => {
@@ -474,7 +511,7 @@ class TableList extends PureComponent {
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/add',
+      type: 'dept/add',
       payload: {
         desc: fields.desc,
       },
@@ -483,7 +520,31 @@ class TableList extends PureComponent {
     message.success('添加成功');
     this.handleModalVisible();
   };
+  //导出
+  handleExport = fields => {
+    const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'rule/add',
+    //   payload: {
+    //     desc: fields.desc,
+    //   },
+    // });
 
+    message.success('导出');
+   // this.handleModalVisible();
+  };
+  handleDownload = fields => {
+    const { dispatch } = this.props;
+    // dispatch({
+    //   type: 'rule/add',
+    //   payload: {
+    //     desc: fields.desc,
+    //   },
+    // });
+
+    message.success('handleDownload');
+   // this.handleModalVisible();
+  };
   handleUpdate = fields => {
     const { dispatch } = this.props;
     dispatch({
@@ -498,125 +559,6 @@ class TableList extends PureComponent {
     message.success('配置成功');
     this.handleUpdateModalVisible();
   };
-
-  // renderSimpleForm() {
-  //   const {
-  //     form: { getFieldDecorator },
-  //   } = this.props;
-  //   return (
-  //     <Form onSubmit={this.handleSearch} layout="inline">
-  //       <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="规则名称">
-  //             {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="使用状态">
-  //             {getFieldDecorator('status')(
-  //               <Select placeholder="请选择" style={{ width: '100%' }}>
-  //                 <Option value="0">关闭</Option>
-  //                 <Option value="1">运行中</Option>
-  //               </Select>
-  //             )}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <span className={styles.submitButtons}>
-  //             <Button type="primary" htmlType="submit">
-  //               查询
-  //             </Button>
-  //             <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-  //               重置
-  //             </Button>
-  //             <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-  //               展开 <Icon type="down" />
-  //             </a>
-  //           </span>
-  //         </Col>
-  //       </Row>
-  //     </Form>
-  //   );
-  // }
-
-  // renderAdvancedForm() {
-  //   const {
-  //     form: { getFieldDecorator },
-  //   } = this.props;
-  //   return (
-  //     <Form onSubmit={this.handleSearch} layout="inline">
-  //       <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="规则名称">
-  //             {getFieldDecorator('name')(<Input placeholder="请输入" />)}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="使用状态">
-  //             {getFieldDecorator('status')(
-  //               <Select placeholder="请选择" style={{ width: '100%' }}>
-  //                 <Option value="0">关闭</Option>
-  //                 <Option value="1">运行中</Option>
-  //               </Select>
-  //             )}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="调用次数">
-  //             {getFieldDecorator('number')(<InputNumber style={{ width: '100%' }} />)}
-  //           </FormItem>
-  //         </Col>
-  //       </Row>
-  //       <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="更新日期">
-  //             {getFieldDecorator('date')(
-  //               <DatePicker style={{ width: '100%' }} placeholder="请输入更新日期" />
-  //             )}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="使用状态">
-  //             {getFieldDecorator('status3')(
-  //               <Select placeholder="请选择" style={{ width: '100%' }}>
-  //                 <Option value="0">关闭</Option>
-  //                 <Option value="1">运行中</Option>
-  //               </Select>
-  //             )}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="使用状态">
-  //             {getFieldDecorator('status4')(
-  //               <Select placeholder="请选择" style={{ width: '100%' }}>
-  //                 <Option value="0">关闭</Option>
-  //                 <Option value="1">运行中</Option>
-  //               </Select>
-  //             )}
-  //           </FormItem>
-  //         </Col>
-  //       </Row>
-  //       <div style={{ overflow: 'hidden' }}>
-  //         <div style={{ float: 'right', marginBottom: 24 }}>
-  //           <Button type="primary" htmlType="submit">
-  //             查询
-  //           </Button>
-  //           <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-  //             重置
-  //           </Button>
-  //           <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-  //             收起 <Icon type="up" />
-  //           </a>
-  //         </div>
-  //       </div>
-  //     </Form>
-  //   );
-  // }
-
-  // renderForm() {
-  //   const { expandForm } = this.state;
-  //   return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
-  // }
 
   render() {
     const {
@@ -640,7 +582,7 @@ class TableList extends PureComponent {
       handleUpdate: this.handleUpdate,
     };
     return (
-      <PageHeaderWrapper title="查询表格">
+      <PageHeaderWrapper title="">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>
@@ -649,6 +591,12 @@ class TableList extends PureComponent {
             <div className={styles.tableListOperator}>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                 新建
+              </Button>
+              <Button icon="download" type="primary" onClick={() => this.handleDownload()}>
+                导入
+              </Button>
+              <Button icon="export" type="primary" onClick={() => this.handleExport()}>
+                模板下载
               </Button>
               {selectedRows.length > 0 && (
                 <span>
@@ -666,7 +614,7 @@ class TableList extends PureComponent {
               loading={loading}
               data={data}
               columns={this.columns}
-              onSelectRow={this.handleSelectRows}
+             onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />
           </div>

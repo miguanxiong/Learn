@@ -59,3 +59,46 @@ http://111.12.15.86:84/hezhangtong/
 
  http://61.133.238.74:9000/   /   
 ID:dlh_admin, pw: 123456
+dept数据流
+1.浏览器访问：http://localhost:8000/System/dept
+2.react由根据config中router.config.js中配置的连接System/dept,找到react组件
+`  //sytem
+  {
+    path: '/System',
+    name: 'system',
+    icon: 'user',
+    routes: [
+      // profile
+      {
+        path: '/System/dept',
+        name: 'dept',
+        component: './System/dept',
+      },
+    
+    ],
+  }, `
+3.react组件注册在src/pages/.umi/router.js中
+  `{
+        "path": "/System",
+        "name": "system",
+        "icon": "user",
+        "routes": [
+          {
+            "path": "/System/dept",
+            "name": "dept",
+            "component": dynamic({ loader: () => import('../System/dept'), loading: require('E:/git_new/Learn/antd-demo/src/components/PageLoading/index').default  }),
+            "exact": true
+          },
+          {
+            "component": () => React.createElement(require('E:/git_new/Learn/antd-demo/node_modules/umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/pages', hasRoutesInConfig: true })
+          }
+        ]
+      },`
+4.运行到System/dept.js
+      1)dept.js通过connect方法中引入了Models/dept.js，中state的属性data,放在dept组件的属性props中
+      2)组件dept.js中调用models/dept.js中effects方法中的query，query请求后台服务并调用reducer方法save来修改state中的data.此时因为第一步的操作，dept组件中props.dept.data也就有数据了，react会根据数据进行渲染
+5.models/dept.js中调用的后台服务定义在System/dept/servicejs中
+    `export async function queryRule(params) {
+    return request(`/api/System/dept?${stringify(params)}`);
+    }`
+      
