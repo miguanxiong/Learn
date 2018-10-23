@@ -1,4 +1,4 @@
-import {  removeRule, addRule, updateRule } from '@/services/api';
+//import {  removeRule, addRule, updateRule } from '@/services/api';
 import * as api from '../service';
 
 export default {
@@ -13,14 +13,14 @@ export default {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(api.queryRule, payload);
+      const response = yield call(api.queryDept, payload);
       yield put({
         type: 'save',
         payload: response,
       });
     },
     *add({ payload, callback }, { call, put }) {
-      const response = yield call(addRule, payload);
+      const response = yield call(api.addDept, payload);
       yield put({
         type: 'save',
         payload: response,
@@ -28,7 +28,7 @@ export default {
       if (callback) callback();
     },
     *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRule, payload);
+      const response = yield call(api.removeDept, payload);
       yield put({
         type: 'save',
         payload: response,
@@ -36,7 +36,7 @@ export default {
       if (callback) callback();
     },
     *update({ payload, callback }, { call, put }) {
-      const response = yield call(updateRule, payload);
+      const response = yield call(api.updateDept, payload);
       yield put({
         type: 'save',
         payload: response,

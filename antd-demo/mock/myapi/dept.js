@@ -133,7 +133,7 @@ const deptData={"list":deptList,
     }
   
     const body = (b && b.body) || req.body;
-    const { method, name, desc, key } = body;
+    const { method, orgName, orgNum,address, key } = body;
   
     switch (method) {
       /* eslint no-case-declarations:0 */
@@ -144,25 +144,18 @@ const deptData={"list":deptList,
         const i = Math.ceil(Math.random() * 10000);
         tableListDataSource.unshift({
           key: i,
-          href: 'https://ant.design',
-          avatar: [
-            'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
-            'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
-          ][i % 2],
-          name: `TradeCode ${i}`,
-          title: `一个任务名称 ${i}`,
-          owner: '曲丽丽',
-          callNo: Math.floor(Math.random() * 1000),
-          status: Math.floor(Math.random() * 10) % 2,
-          updatedAt: new Date(),
-          createdAt: new Date(),
-          progress: Math.ceil(Math.random() * 100),
+          orgName: orgName,//行政划区
+          orgNum: `A0 ${i}`,//行政编码
+          address: '102.33,12.345',//地址
+          status: Math.floor(Math.random() * 10) % 4,//行政状态
+          updatedAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
+          createdAt: new Date(`2017-07-${Math.floor(i / 2) + 1}`),
         });
         break;
       case 'update':
         tableListDataSource = tableListDataSource.map(item => {
           if (item.key === key) {
-            Object.assign(item, { desc, name });
+         //   Object.assign(item, { desc, name });
             return item;
           }
           return item;
