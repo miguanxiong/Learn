@@ -1,116 +1,29 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import moment from 'moment';
 import {
-  Row,
-  Col,
   Card,
   Form,
-  Input,
-  Select,
   Icon,
   Button,
   Dropdown,
   Menu,
-  InputNumber,
-  DatePicker,
-  Modal,
   message,
   Badge,
   Divider,
-  Steps,
-  Radio,
-  TreeSelect,
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './dept.less';
+import DeptForm from './DeptForm';
 
-const FormItem = Form.Item;
-const { Step } = Steps;
-const { TextArea } = Input;
-const { Option } = Select;
-const RadioGroup = Radio.Group;
+
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
 const statusMap = ['default', 'processing', 'success', 'error'];
 const status = ['注销', '正常', '已上线', '异常'];
-const treeData = [{
-  title: 'Node1',
-  value: '0-0',
-  key: '0-0',
-  children: [{
-    title: 'Child Node1',
-    value: '0-0-1',
-    key: '0-0-1',
-  }, {
-    title: 'Child Node2',
-    value: '0-0-2',
-    key: '0-0-2',
-  }],
-}];
-const CreateForm = Form.create()(props => {
-  const icon = <Icon type="smile" />;
-  const { modalVisible, form, handleAdd, handleModalVisible } = props;
-  const okHandle = () => {
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      form.resetFields();
-      handleAdd(fieldsValue);
-    });
-  };
-  let value="0-0";
-  const onChangeTree = () => {
-    value
-  };
-  return (
-    <Modal
-      destroyOnClose
-      title="新建机构"
-      visible={modalVisible}
-      onOk={okHandle}
-      onCancel={() => handleModalVisible()}
-    >
-    {/*
- orgName: `行政划区 ${i}`,//行政划区
-        orgNum: `A0 ${i}`,//行政编码
-        address: '102.33,12.345',//地址
-
-  */}
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="上级行政区划">
-        {form.getFieldDecorator('parentId', {initialValue: value,
-          rules: [{ required: true, message: '选择上级行政区划'}],
-        })(<TreeSelect
-          style={{ width: 300 }}
-          dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-          treeData={treeData}
-          placeholder="Please select"
-          treeDefaultExpandAll
-          suffixIcon={icon}
-         onChange={onChangeTree}
-         showSearch={true}
-         treeNodeFilterProp={"title"}
-        />)}
-      </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="行政区划">
-        {form.getFieldDecorator('orgName', {
-          rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
-        })(<Input placeholder="请输入" />)}
-      </FormItem>
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="地址">
-        {form.getFieldDecorator('address', {
-          rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
-        })(<Input placeholder="请输入" />)}
-      </FormItem>
-    </Modal>
-  );
-});
-
-
-
 /* eslint react/no-multi-comp:0 */
 @connect(({ dept, loading }) => ({
   dept,
@@ -125,6 +38,7 @@ class TableList extends PureComponent {
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
+    record: {},
   };
   columns = [
     {
@@ -288,13 +202,19 @@ class TableList extends PureComponent {
   handleModalVisible = flag => {
     this.setState({
       modalVisible: !!flag,
+      record:{},
     });
   };
 
   handleUpdateModalVisible = (flag, record) => {
+    // this.setState({
+    //   updateModalVisible: !!flag,
+    //   stepFormValues: record || {},
+    // });
+    console.info(record);
     this.setState({
-      updateModalVisible: !!flag,
-      stepFormValues: record || {},
+      modalVisible: !!flag,
+      record: record || {},
     });
   };
 
@@ -356,7 +276,7 @@ class TableList extends PureComponent {
       dept: { data },
       loading,
     } = this.props;
-    const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
+    const { selectedRows, modalVisible,updateModalVisible, stepFormValues,record } = this.state;
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="remove">删除</Menu.Item>
@@ -369,6 +289,7 @@ class TableList extends PureComponent {
       handleModalVisible: this.handleModalVisible,
       handleUpdateModalVisible: this.handleUpdateModalVisible,
       handleUpdate: this.handleUpdate,
+   
     };
     // const updateMethods = {
     //   handleUpdateModalVisible: this.handleUpdateModalVisible,
@@ -412,14 +333,8 @@ class TableList extends PureComponent {
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible}  updateModalVisible={updateModalVisible}/>
-        {/* {stepFormValues && Object.keys(stepFormValues).length ? (
-          <UpdateForm
-            {...updateMethods}
-            updateModalVisible={updateModalVisible}
-            values={stepFormValues}
-          />
-        ) : null} */}
+        <DeptForm {...parentMethods} modalVisible={modalVisible} record={record} />
+ 
       </PageHeaderWrapper>
     );
   }
