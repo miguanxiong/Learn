@@ -10,12 +10,13 @@ import {
   message,
   Badge,
   Divider,
+  Popconfirm,
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-import styles from './dept.less';
-import DeptForm from './DeptForm';
+import styles from './index.less';
+import DeptForm from './modal';
 
 
 const getValue = obj =>
@@ -88,7 +89,10 @@ class TableList extends PureComponent {
         <Fragment>
           <a onClick={() => this.handleUpdateModalVisible(true, record)}>编辑</a>
           <Divider type="vertical" />
-          <a onClick={() => this.handleRemove(true, record)}>删除</a>
+          {/* <Popconfirm title="确认删除?" onConfirm={this.handleRemove.bind(true, record)}>
+         
+            <a href="">删除</a>
+          </Popconfirm> */}
           <Divider type="vertical" />
           <a onClick={() => this.handleUpdateModalVisible(true, record)}>查看成员</a>
           <Divider type="vertical" />
@@ -157,7 +161,7 @@ class TableList extends PureComponent {
 
     if (!selectedRows) return;
     dispatch({
-      type: 'rule/remove',
+      type: 'dept/remove',
       payload: {
         key: selectedRows.map(row => row.key),
       },
@@ -259,16 +263,17 @@ class TableList extends PureComponent {
   handleUpdate = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/update',
+      type: 'dept/update',
       payload: {
-        name: fields.name,
-        desc: fields.desc,
+        orgName: fields.orgName,
+        address: fields.address,
         key: fields.key,
       },
     });
 
-    message.success('配置成功');
-    this.handleUpdateModalVisible();
+    message.success('修改成功');
+    this.handleModalVisible();
+    // this.handleUpdateModalVisible();
   };
 
   render() {
@@ -280,7 +285,7 @@ class TableList extends PureComponent {
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="remove">删除</Menu.Item>
-        <Menu.Item key="approval">批量审批</Menu.Item>
+        {/* <Menu.Item key="approval">批量审批</Menu.Item> */}
       </Menu>
     );
 
@@ -314,12 +319,13 @@ class TableList extends PureComponent {
               </Button>
               {selectedRows.length > 0 && (
                 <span>
-                  <Button>批量操作</Button>
-                  <Dropdown overlay={menu}>
+                  <Button icon="delete" type="primary" onClick={() => this.handleRemove()}>
+                  删除</Button>
+                  {/* <Dropdown overlay={menu}>
                     <Button>
                       更多操作 <Icon type="down" />
                     </Button>
-                  </Dropdown>
+                  </Dropdown> */}
                 </span>
               )}
             </div>

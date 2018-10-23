@@ -1,5 +1,5 @@
 //import {  removeRule, addRule, updateRule } from '@/services/api';
-import * as api from '../service';
+import * as api from './service';
 
 export default {
   namespace: 'dept',

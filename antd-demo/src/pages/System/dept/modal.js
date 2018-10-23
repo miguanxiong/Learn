@@ -22,13 +22,19 @@ const treeData = [{
   }];
 const DeptForm = Form.create()(props => {
     const icon = <Icon type="smile" />;
-    const { modalVisible, form, handleAdd, handleModalVisible ,record} = props;
+    const { modalVisible, form, handleAdd,handleUpdate,handleModalVisible ,record} = props;
    const {orgName}=record;
     const okHandle = () => {
       form.validateFields((err, fieldsValue) => {
         if (err) return;
         form.resetFields();
-        handleAdd(fieldsValue);
+        if(Object.keys(record).length===0)
+        {
+          handleAdd(fieldsValue);
+        }else{
+          Object.assign(record, fieldsValue);
+          handleUpdate(record);
+        }
       });
     };
     let value="0-0";
@@ -66,12 +72,12 @@ const DeptForm = Form.create()(props => {
         </FormItem>
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="行政区划">
           {form.getFieldDecorator('orgName', {initialValue: orgName,
-            rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
+            rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 3 }],
           })(<Input placeholder="请输入" />)}
         </FormItem>
         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="地址">
           {form.getFieldDecorator('address', {
-            rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
+            rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 3 }],
           })(<Input placeholder="请输入" />)}
         </FormItem>
       </Modal>
