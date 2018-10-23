@@ -105,8 +105,8 @@ const deptData={"list":deptList,
       dataSource = filterDataSource;
     }
   
-    if (params.name) {
-      dataSource = dataSource.filter(data => data.name.indexOf(params.name) > -1);
+    if (params.orgName) {
+      dataSource = dataSource.filter(data => data.orgName.indexOf(params.orgName) > -1);
     }
   
     let pageSize = 10;
@@ -155,7 +155,7 @@ const deptData={"list":deptList,
       case 'update':
         tableListDataSource = tableListDataSource.map(item => {
           if (item.key === key) {
-         //   Object.assign(item, { desc, name });
+           Object.assign(item, { orgName, address });
             return item;
           }
           return item;

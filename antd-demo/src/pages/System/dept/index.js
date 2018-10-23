@@ -1,11 +1,16 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import {
+  Row,
+  Col,
+  Input,
+  Select,
   Card,
   Form,
   Icon,
   Button,
   Dropdown,
+  // Option,
   Menu,
   message,
   Badge,
@@ -18,6 +23,8 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './index.less';
 import DeptForm from './modal';
 
+const FormItem = Form.Item;
+const Option = Select.Option;
 
 const getValue = obj =>
   Object.keys(obj)
@@ -148,12 +155,12 @@ class TableList extends PureComponent {
     });
   };
 
-  toggleForm = () => {
-    const { expandForm } = this.state;
-    this.setState({
-      expandForm: !expandForm,
-    });
-  };
+  // toggleForm = () => {
+  //   const { expandForm } = this.state;
+  //   this.setState({
+  //     expandForm: !expandForm,
+  //   });
+  // };
 
   handleRemove = () => {
     const { dispatch } = this.props;
@@ -275,7 +282,43 @@ class TableList extends PureComponent {
     this.handleModalVisible();
     // this.handleUpdateModalVisible();
   };
-
+  renderSearchForm() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    return (
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <Col md={8} sm={24}>
+            <FormItem label="行政区划">
+              {getFieldDecorator('orgName')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="状态">
+              {getFieldDecorator('status')(
+                <Select placeholder="请选择" style={{ width: '100%' }}>
+                  <Option value="0">注销</Option>
+                  <Option value="1">正常</Option>
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <span className={styles.submitButtons}>
+              <Button type="primary" htmlType="submit">
+                查询
+              </Button>
+              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+                重置
+              </Button>
+             
+            </span>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
   render() {
     const {
       dept: { data },
@@ -305,7 +348,7 @@ class TableList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>
-            {/* {this.renderForm()} */}
+            { this.renderSearchForm()} 
             </div>
             <div className={styles.tableListOperator}>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>

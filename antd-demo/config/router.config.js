@@ -267,7 +267,7 @@ export default [
       {
         path: '/System/dept',
         name: 'dept',
-        component: './System/dept',
+        component: './System/dept/index',
       },
     
     ],
