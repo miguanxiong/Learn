@@ -1,0 +1,16 @@
+server:
+  port: 8081
+spring:
+  config:
+    name: ${server.port}
+  application:
+    name: "HELLO"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:1111/eureka/,http://peer2:1112/eureka/
